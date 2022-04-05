@@ -1,3 +1,4 @@
+use colored::*;
 use std::error::Error;
 use std::{env, fs};
 
@@ -9,9 +10,10 @@ pub fn run(config: Config) -> Result<(), Box<dyn Error>> {
     } else {
         search_case_insensitive(&config.query, &contents)
     };
-    for line in result {
-        println!("{}", line);
-    }
+    // for line in result {
+    //     println!("{}", line);
+    // }
+    printline_colord(&config.query, result);
     Ok(())
 }
 
@@ -59,6 +61,13 @@ pub fn search_case_insensitive<'a>(query: &str, contents: &'a str) -> Vec<&'a st
     }
 
     results
+}
+
+pub fn printline_colord(query: &str, result: Vec<&str>) {
+    for line in result {
+        let line_to_print = line.replace(query, &query.green().bold().underline().to_string());
+        println!("{}", line_to_print)
+    }
 }
 
 #[cfg(test)]
